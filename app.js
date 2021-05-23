@@ -22,14 +22,14 @@ const uriUtil = require('mongodb-uri');
 const MongoStore = require('connect-mongo')(session);
 
 // Stripe
-const stripeSK = process.env.PORT ? process.env.STRIPE_LIVE_SK : fs.readFileSync(`${__dirname}/private/stripe_test_secret_key.txt`).toString();
-const stripe = require('stripe')(stripeSK);
+// const stripeSK = process.env.PORT ? process.env.STRIPE_LIVE_SK : fs.readFileSync(`${__dirname}/private/stripe_test_secret_key.txt`).toString();
+// const stripe = require('stripe')(stripeSK);
 
 
 
 // Global constants
-const GOOGLE_CLIENT_SECRET = process.env.PORT ? process.env.GOOGLE_CLIENT_SECRET : fs.readFileSync(`${__dirname}/private/google_client_secret.txt`).toString();
-const FACEBOOK_APP_SECRET = process.env.PORT ? process.env.FACEBOOK_APP_SECRET : fs.readFileSync(`${__dirname}/private/facebook_app_secret.txt`).toString();
+// const GOOGLE_CLIENT_SECRET = process.env.PORT ? process.env.GOOGLE_CLIENT_SECRET : fs.readFileSync(`${__dirname}/private/google_client_secret.txt`).toString();
+// const FACEBOOK_APP_SECRET = process.env.PORT ? process.env.FACEBOOK_APP_SECRET : fs.readFileSync(`${__dirname}/private/facebook_app_secret.txt`).toString();
 const baseCallbackURL = (process.env.PORT) ? 'https://www.recipesaver.me' : 'https://localhost:8080';
 const profileImageDefault = 'https://res.cloudinary.com/dormh2fvt/image/upload/v1573001413/rs-site-images/default-profile.png';
 
@@ -38,7 +38,7 @@ const profileImageDefault = 'https://res.cloudinary.com/dormh2fvt/image/upload/v
 // DB setup
 mongoose.set('useUnifiedTopology', true)
 if (!process.env.PORT) {
-  mongoose.connect('mongodb://localhost:27017/recipe-saver-3',  { useNewUrlParser: true });
+  mongoose.connect('mongodb://localhost:27017/recipe-saver-personal',  { useNewUrlParser: true });
 } else {
   console.log('App running in heroku'); 
 	const mongodbUri = process.env.DB_URI; 
@@ -124,147 +124,147 @@ app.use('/*', (req, res, next) => {
 });
 
 
-// Passport Facebook middleware
-passport.use(new FacebookStrategy({
-    clientID: '264292990672562',
-    clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: `${baseCallbackURL}/auth/facebook/login/callback`,
-    profileFields: ['id', 'emails', 'name'],
-    passReqToCallback : true
-  },
-  (req, accessToken, refreshToken, profile, done) => {
-    const actionToTake = req.query.state;
+// // Passport Facebook middleware
+// passport.use(new FacebookStrategy({
+//     clientID: '264292990672562',
+//     clientSecret: FACEBOOK_APP_SECRET,
+//     callbackURL: `${baseCallbackURL}/auth/facebook/login/callback`,
+//     profileFields: ['id', 'emails', 'name'],
+//     passReqToCallback : true
+//   },
+//   (req, accessToken, refreshToken, profile, done) => {
+//     const actionToTake = req.query.state;
 
-    if (actionToTake === 'login') {
-      User.findOne({ facebookId: profile.id }, (err, user) => {
-        if (!user) {
-          return done(null, { notRecognized: 'Hmm, we don\'t recognize that email. Please try again.' });
-        } else {
-          if (!user.email && profile._json.email) {
-            user.email = profile._json.email;
-            user.save((err, record) => {
-              return done(err, user);
-            });
-          } else {
-            return done(err, user);
-          }
-        }
-      });
-    } else if (actionToTake === 'register') {
-      User.findOne({ 'facebookId':  profile.id }, (err, user) => {
-        if (user) return done(null, { errMessage: 'Account already registered' });
-        const newUser = new User({
-          facebookId: profile.id,
-          email: profile._json.email,
-          name: `${profile._json.first_name} ${profile._json.last_name}`,
-          subscription: 'Basic',
-          profileImage: profileImageDefault
-        });
-        newUser.save(function(err) {
-          if (err) console.error(err);
-          console.log('Facebook user saved');
-          if (profile._json.email) sendWelcomeEmail(profile._json.email);
-          return done(null, newUser);
-        });
-      });
-    } else return done(null, { errMessage: 'Something went wrong. Please try again.' });
-  }
-));
+//     if (actionToTake === 'login') {
+//       User.findOne({ facebookId: profile.id }, (err, user) => {
+//         if (!user) {
+//           return done(null, { notRecognized: 'Hmm, we don\'t recognize that email. Please try again.' });
+//         } else {
+//           if (!user.email && profile._json.email) {
+//             user.email = profile._json.email;
+//             user.save((err, record) => {
+//               return done(err, user);
+//             });
+//           } else {
+//             return done(err, user);
+//           }
+//         }
+//       });
+//     } else if (actionToTake === 'register') {
+//       User.findOne({ 'facebookId':  profile.id }, (err, user) => {
+//         if (user) return done(null, { errMessage: 'Account already registered' });
+//         const newUser = new User({
+//           facebookId: profile.id,
+//           email: profile._json.email,
+//           name: `${profile._json.first_name} ${profile._json.last_name}`,
+//           subscription: 'Basic',
+//           profileImage: profileImageDefault
+//         });
+//         newUser.save(function(err) {
+//           if (err) console.error(err);
+//           console.log('Facebook user saved');
+//           if (profile._json.email) sendWelcomeEmail(profile._json.email);
+//           return done(null, newUser);
+//         });
+//       });
+//     } else return done(null, { errMessage: 'Something went wrong. Please try again.' });
+//   }
+// ));
 
-app.get('/auth/facebook/:actionToTake', (req, res, next) => {
-  const { actionToTake } = req.params;
+// app.get('/auth/facebook/:actionToTake', (req, res, next) => {
+//   const { actionToTake } = req.params;
 
-  passport.authenticate('facebook', 
-  { scope: ['email'],
-    state: actionToTake,
-    prompt: 'select_account'
-  })(req, res, next);
-});
+//   passport.authenticate('facebook', 
+//   { scope: ['email'],
+//     state: actionToTake,
+//     prompt: 'select_account'
+//   })(req, res, next);
+// });
 
-app.get('/auth/facebook/login/callback', passport.authenticate('facebook', { failureRedirect: '/login-f' }), (req, res) => {
-  if (req.user.notRecognized) {
-    res.redirect('/login?login-reg-msg=not-recognized');
-  } else if (req.user.errMessage === 'Account already registered') {
-    res.redirect('/login?login-reg-msg=fb-already-registered');
-  } else {
-    if (req.user.creationDate && Date.now() - req.user.creationDate < 20000  && req.user.subscription === 'Basic') {
-      res.redirect('/plans');	
-    } else res.redirect('/recipes');
-  }
-});
+// app.get('/auth/facebook/login/callback', passport.authenticate('facebook', { failureRedirect: '/login-f' }), (req, res) => {
+//   if (req.user.notRecognized) {
+//     res.redirect('/login?login-reg-msg=not-recognized');
+//   } else if (req.user.errMessage === 'Account already registered') {
+//     res.redirect('/login?login-reg-msg=fb-already-registered');
+//   } else {
+//     if (req.user.creationDate && Date.now() - req.user.creationDate < 20000  && req.user.subscription === 'Basic') {
+//       res.redirect('/plans');	
+//     } else res.redirect('/recipes');
+//   }
+// });
 
 
 
-// Passport Google middleware
-passport.use(new GoogleStrategy({
-    clientID: '906915295802-pq35f3ve2mubddbul0hab46s8tok9nom.apps.googleusercontent.com',
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: `${baseCallbackURL}/auth/google/login/callback`,
-    passReqToCallback : true,
-  },
-  (req, accessToken, refreshToken, profile, done) => {
-    const actionToTake = req.query.state;
+// // Passport Google middleware
+// passport.use(new GoogleStrategy({
+//     clientID: '906915295802-pq35f3ve2mubddbul0hab46s8tok9nom.apps.googleusercontent.com',
+//     clientSecret: GOOGLE_CLIENT_SECRET,
+//     callbackURL: `${baseCallbackURL}/auth/google/login/callback`,
+//     passReqToCallback : true,
+//   },
+//   (req, accessToken, refreshToken, profile, done) => {
+//     const actionToTake = req.query.state;
 
-    if (actionToTake === 'login') {
-      User.findOne({ googleId: profile.id }, (err, user) => {
-        if (!user) {
-          return done(null, { notRecognized: 'Hmm, we don\'t recognize that email. Please try again.' });
-        } else {
-          if (!user.email && profile._json.email) {
-            user.email = profile._json.email;
-            user.save((err, record) => {
-              return done(err, user);
-            });
-          } else {
-            return done(err, user);
-          }
-        }
-      });
-    } else if (actionToTake === 'register') {
-      User.findOne({ 'googleId':  profile.id }, (err, user) => {
-        if (user) return done(null, { errMessage: 'Email already registered' });
-        const newUser = new User({
-          googleId: profile.id,
-          email: profile._json.email,
-          name: profile.displayName,
-          subscription: 'Basic',
-          profileImage: profileImageDefault
-        });
-        newUser.save(function(err) {
-          if (err) console.error(err);
-          console.log('Google user saved');
-          if (profile._json.email) sendWelcomeEmail(profile._json.email);
-          return done(null, newUser);
-        });
-      });
-    } else return done(null, { errMessage: 'Something went wrong. Please try again.' });
-  }
-));
+//     if (actionToTake === 'login') {
+//       User.findOne({ googleId: profile.id }, (err, user) => {
+//         if (!user) {
+//           return done(null, { notRecognized: 'Hmm, we don\'t recognize that email. Please try again.' });
+//         } else {
+//           if (!user.email && profile._json.email) {
+//             user.email = profile._json.email;
+//             user.save((err, record) => {
+//               return done(err, user);
+//             });
+//           } else {
+//             return done(err, user);
+//           }
+//         }
+//       });
+//     } else if (actionToTake === 'register') {
+//       User.findOne({ 'googleId':  profile.id }, (err, user) => {
+//         if (user) return done(null, { errMessage: 'Email already registered' });
+//         const newUser = new User({
+//           googleId: profile.id,
+//           email: profile._json.email,
+//           name: profile.displayName,
+//           subscription: 'Basic',
+//           profileImage: profileImageDefault
+//         });
+//         newUser.save(function(err) {
+//           if (err) console.error(err);
+//           console.log('Google user saved');
+//           if (profile._json.email) sendWelcomeEmail(profile._json.email);
+//           return done(null, newUser);
+//         });
+//       });
+//     } else return done(null, { errMessage: 'Something went wrong. Please try again.' });
+//   }
+// ));
 
-app.get('/auth/google/:actionToTake', (req, res, next) => {
-  const { actionToTake } = req.params;
+// app.get('/auth/google/:actionToTake', (req, res, next) => {
+//   const { actionToTake } = req.params;
 
-  passport.authenticate('google', 
-  { scope: [
-    'https://www.googleapis.com/auth/plus.login',
-    'https://www.googleapis.com/auth/userinfo.profile',
-    'https://www.googleapis.com/auth/userinfo.email' ],
-    state: actionToTake,
-    prompt: 'select_account'
-  })(req, res, next);
-});
+//   passport.authenticate('google', 
+//   { scope: [
+//     'https://www.googleapis.com/auth/plus.login',
+//     'https://www.googleapis.com/auth/userinfo.profile',
+//     'https://www.googleapis.com/auth/userinfo.email' ],
+//     state: actionToTake,
+//     prompt: 'select_account'
+//   })(req, res, next);
+// });
 
-app.get(['/auth/google/login/callback', '/auth/google/register/callback'], passport.authenticate('google', { failureRedirect: '/login-f' }), (req, res) => {
-  if (req.user.notRecognized) {
-    res.redirect('/login?login-reg-msg=not-recognized');
-  } else if (req.user.errMessage === 'Email already registered') {
-    res.redirect('/login?login-reg-msg=already-registered');
-  } else {
-    if (req.user.creationDate && Date.now() - req.user.creationDate < 20000 && req.user.subscription === 'Basic') {
-      res.redirect('/plans');	
-    } else res.redirect('/recipes');
-  }
-});
+// app.get(['/auth/google/login/callback', '/auth/google/register/callback'], passport.authenticate('google', { failureRedirect: '/login-f' }), (req, res) => {
+//   if (req.user.notRecognized) {
+//     res.redirect('/login?login-reg-msg=not-recognized');
+//   } else if (req.user.errMessage === 'Email already registered') {
+//     res.redirect('/login?login-reg-msg=already-registered');
+//   } else {
+//     if (req.user.creationDate && Date.now() - req.user.creationDate < 20000 && req.user.subscription === 'Basic') {
+//       res.redirect('/plans');	
+//     } else res.redirect('/recipes');
+//   }
+// });
 
 
 // Passport Local middleware
@@ -307,7 +307,7 @@ passport.use(new LocalStrategy(
         });
         newUser.save(err => {
           if (err) console.error(err);
-          sendWelcomeEmail(email);
+          // sendWelcomeEmail(email);
           return done(null, newUser);
         });
       });
@@ -339,8 +339,8 @@ app.get('/test', (req, res) => {
 // Initialize API router
 require('./routes/api-routes')(app);
 
-// Stripe API routes
-require('./routes/stripe-api')(app, stripe);
+// // Stripe API routes
+// require('./routes/stripe-api')(app, stripe);
 
 // Sharing route
 require('./routes/sharing')(app);

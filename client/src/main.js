@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import VueAnalytics from 'vue-analytics';
+// import VueAnalytics from 'vue-analytics';
 
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
@@ -12,14 +12,14 @@ router.beforeEach((to, from, next) => {
 
 const isProd = process.env.NODE_ENV === 'production';
 
-Vue.use(VueAnalytics, {
-  id: 'UA-151413018-1',
-  router,
-  // debug: {
-  //   enabled: !isProd,
-  //   sendHitTask: true
-  // }
-});
+// Vue.use(VueAnalytics, {
+//   id: 'UA-151413018-1',
+//   router,
+//   // debug: {
+//   //   enabled: !isProd,
+//   //   sendHitTask: true
+//   // }
+// });
 
 new Vue({
   router,

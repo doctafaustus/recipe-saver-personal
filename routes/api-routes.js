@@ -10,8 +10,8 @@ const ogs = require('open-graph-scraper');
 // Config variables
 const cloudinarySecret = process.env.PORT ? process.env.CLOUDINARY_SECRET : fs.readFileSync(`${__dirname}/../private/cloudinary_secret.txt`).toString();
 cloudinary.config({ 
-  cloud_name: 'dormh2fvt', 
-  api_key: '778489856867779', 
+  cloud_name: 'dzynqn10l', 
+  api_key: '118568662192166', 
   api_secret: cloudinarySecret 
 });
 const cloudinaryOptionsRecipe = { quality: 60, gravity: 'center', height: 570, width: 570, crop: 'fill', tags: ['recipe_saver'] };

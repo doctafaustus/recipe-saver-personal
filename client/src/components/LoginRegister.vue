@@ -140,10 +140,10 @@ export default {
       this.errors = [];
 
       // Force new users to use Google strategy if they've entered a gmail address
-      if (this.email.indexOf('@gmail') > -1) {
-        this.errors.push('Please use "Sign Up With Google" above to proceed');
-        return false;
-      }
+      // if (this.email.indexOf('@gmail') > -1) {
+      //   this.errors.push('Please use "Sign Up With Google" above to proceed');
+      //   return false;
+      // }
 
       if (!this.fullName.length) this.errors.push('Name required');
       else if (this.fullName.length > 50) this.errors.push('Name must be less than 50 characters');
