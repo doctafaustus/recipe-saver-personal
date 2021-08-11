@@ -41,7 +41,7 @@ function saveDataToObj() {
   dataInputs.forEach(input => {
     recipeStorage[input.id] = input.value;
   });
-  if (imageEl.getAttribute('src') !== 'https://res.cloudinary.com/dormh2fvt/image/upload/v1527317481/placeholder_rjy55k.jpg') {
+  if (imageEl.getAttribute('src') !== 'https://res.cloudinary.com/dzynqn10l/image/upload/v1628695697/recipe-saver-personal/default-profile_1_jithvf.jpg') {
     recipeStorage.image = imageEl.getAttribute('src');
   }
 }
