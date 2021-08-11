@@ -26,7 +26,6 @@ const MongoStore = require('connect-mongo')(session);
 // const stripe = require('stripe')(stripeSK);
 
 
-
 // Global constants
 // const GOOGLE_CLIENT_SECRET = process.env.PORT ? process.env.GOOGLE_CLIENT_SECRET : fs.readFileSync(`${__dirname}/private/google_client_secret.txt`).toString();
 // const FACEBOOK_APP_SECRET = process.env.PORT ? process.env.FACEBOOK_APP_SECRET : fs.readFileSync(`${__dirname}/private/facebook_app_secret.txt`).toString();
