@@ -34,7 +34,6 @@ const baseCallbackURL = (process.env.PORT) ? 'recipe-saver-personal.herokuapp.co
 const profileImageDefault = 'https://res.cloudinary.com/dzynqn10l/image/upload/v1628695697/recipe-saver-personal/default-profile_1_jithvf.jpg';
 
 
-
 // DB setup
 mongoose.set('useUnifiedTopology', true);
 const mongodbUri = (process.env.PORT) ? process.env.DB_URI : fs.readFileSync(`${__dirname}/private/mongo_connection_uri.txt`).toString();
