@@ -347,7 +347,6 @@ require('./routes/sharing')(app);
 // Password recovery route
 require('./routes/recovery')(app);
 
-
 // Listen on port 8081
 // Use a self-signed certificate to serve localhost on https since Facebook login requires it
 if (process.env.PORT) {
