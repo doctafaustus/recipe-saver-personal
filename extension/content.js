@@ -2,6 +2,7 @@
 if (window.location.hostname === 'recipe-saver-3.herokuapp.com' || 
 		window.location.hostname === 'www.recipesaver.net' ||
 		window.location.hostname === 'www.recipesaver.me' ||
+    window.location.hostname === 'recipe-saver-personal.herokuapp.com' ||
 		window.location.hostname === 'localhost') {
 	
 		// Get rs_id from hidden input on List component

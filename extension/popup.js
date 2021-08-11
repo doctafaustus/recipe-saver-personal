@@ -1,7 +1,7 @@
 // Set dev or prod site
 // const mode = 'prod';
 const mode = 'prod';
-const site = (mode === 'prod') ? 'https://www.recipesaver.me' : 'https://localhost:8080';
+const site = (mode === 'prod') ? 'https://recipe-saver-personal.herokuapp.com' : 'https://localhost:8080';
 
 // Get whitelisted sites
 const whiteListedSites = getWhiteListedSites();
@@ -203,7 +203,7 @@ function sendToRS() {
 
 
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', `${(mode === 'dev') ? 'https://localhost:8081' : 'https://www.recipesaver.me'}/api/extension`, true);
+  xhr.open('POST', `${(mode === 'dev') ? 'https://localhost:8081' : 'https://recipe-saver-personal.herokuapp.com'}/api/extension`, true);
   xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8',);
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4 && xhr.status === 200) {

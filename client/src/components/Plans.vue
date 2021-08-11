@@ -123,10 +123,10 @@ export default {
         this.btnToShow = 'recipes';
       }, 2000);
 
-      this.$ga.event({
-        eventCategory: 'Plans',
-        eventAction: 'free plan clicked'
-      });
+      // this.$ga.event({
+      //   eventCategory: 'Plans',
+      //   eventAction: 'free plan clicked'
+      // });
     },
     handleResponse(response) {
 
@@ -140,38 +140,38 @@ export default {
       switch(response.data.message) {
         case 'not logged in':
           this.message = `Please login or register first. ${noChargeText}`;
-          this.$ga.event({
-            eventCategory: 'Plans',
-            eventAction: 'full plan error',
-            eventLabel: this.message
-          });
+          // this.$ga.event({
+          //   eventCategory: 'Plans',
+          //   eventAction: 'full plan error',
+          //   eventLabel: this.message
+          // });
           break;
         case 'no user found':
           this.message = `User not found. Please login first. ${noChargeText}`;
-          this.$ga.event({
-            eventCategory: 'Plans',
-            eventAction: 'full plan error',
-            eventLabel: this.message
-          });
+          // this.$ga.event({
+          //   eventCategory: 'Plans',
+          //   eventAction: 'full plan error',
+          //   eventLabel: this.message
+          // });
           break;
         case 'has full plan':
           this.message = `This account already has a Full Plan. ${noChargeText}`;
           this.btnToShow = 'recipes';
-          this.$ga.event({
-            eventCategory: 'Plans',
-            eventAction: 'full plan error',
-            eventLabel: this.message
-          });
+          // this.$ga.event({
+          //   eventCategory: 'Plans',
+          //   eventAction: 'full plan error',
+          //   eventLabel: this.message
+          // });
           break;
         case 'new subscription':
           this.title = 'You\'re In!';
           this.message = 'Congratulations! You have successfully signed up for the Full plan and now have unlimited access';
           this.btnToShow = 'recipes';
           this.error = false;
-          this.$ga.event({
-            eventCategory: 'Plans',
-            eventAction: 'full plan signup',
-          });
+          // this.$ga.event({
+          //   eventCategory: 'Plans',
+          //   eventAction: 'full plan signup',
+          // });
           break;
       }
 
@@ -181,7 +181,7 @@ export default {
   mounted() {
 
     const component = this;
-    const publicKey = window.location.origin.includes('recipesaver.me') ? 'pk_live_51HbpZpD9ukuHTF1f3t6I6YWG0PPnQvyZUNQh802R9lmsqK1COMgHHfZRROfddXSdf1qrHSirIOUSrnq6AUDhtE0L002k9uY9Ls' : 'pk_test_51HbpZpD9ukuHTF1fnM8DQHlp45Zqwl0lwDN5kiQiJOoHFhgRFr6KJbGRLDWmNz756fSBpVeNzU8n9mkvIaz4AzuB00bAeZKycE';
+    const publicKey = window.location.origin.includes('recipe-saver-personal.herokuapp.com') ? 'pk_live_51HbpZpD9ukuHTF1f3t6I6YWG0PPnQvyZUNQh802R9lmsqK1COMgHHfZRROfddXSdf1qrHSirIOUSrnq6AUDhtE0L002k9uY9Ls' : 'pk_test_51HbpZpD9ukuHTF1fnM8DQHlp45Zqwl0lwDN5kiQiJOoHFhgRFr6KJbGRLDWmNz756fSBpVeNzU8n9mkvIaz4AzuB00bAeZKycE';
 
     // Test CC #: 4242424242424242
 		const handler = StripeCheckout.configure({
@@ -212,10 +212,10 @@ export default {
 				allowRememberMe: false,
       });
       
-      this.$ga.event({
-        eventCategory: 'Plans',
-        eventAction: 'full plan clicked'
-      });
+      // this.$ga.event({
+      //   eventCategory: 'Plans',
+      //   eventAction: 'full plan clicked'
+      // });
     });
 
   },

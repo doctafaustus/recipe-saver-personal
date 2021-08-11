@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default function() {
 
-  const baseURL = (window.location.host.includes('recipesaver.me')) ? 
+  const baseURL = (window.location.host.includes('recipe-saver-personal.herokuapp.com')) ? 
   `https://${window.location.host}/api` : 'https://localhost:8081/api';
 
   axios.defaults.withCredentials = true;

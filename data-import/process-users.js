@@ -6,7 +6,7 @@ const users = require('../users_backup.js');
 console.log(users.length);
 
 users.forEach(user => {
-  user.profileImage = 'https://res.cloudinary.com/dormh2fvt/image/upload/v1573001413/rs-site-images/default-profile.png';
+  user.profileImage = 'https://res.cloudinary.com/dzynqn10l/image/upload/v1628695697/recipe-saver-personal/default-profile_1_jithvf.jpg';
 
   if (user.subscription === 'Full (Legacy)') {
     user.appVersion = 1;

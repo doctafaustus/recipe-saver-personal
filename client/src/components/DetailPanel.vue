@@ -197,7 +197,7 @@ export default {
       editMode: true,
       confirmActive: false,
       imagePreview: '',
-      blankImage: 'https://res.cloudinary.com/dormh2fvt/image/upload/v1556591475/blank_z9ggqs.jpg',
+      blankImage: 'https://res.cloudinary.com/dzynqn10l/image/upload/v1628695697/recipe-saver-personal/default-profile_1_jithvf.jpg',
       imageAsset: null,
       savingOverlayActive: false,
       tagQuery: '',
