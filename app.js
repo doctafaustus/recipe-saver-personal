@@ -39,6 +39,7 @@ const profileImageDefault = 'https://res.cloudinary.com/dzynqn10l/image/upload/v
 mongoose.set('useUnifiedTopology', true);
 const mongodbUri = (process.env.PORT) ? process.env.DB_URI : fs.readFileSync(`${__dirname}/private/mongo_connection_uri.txt`).toString();
 
+
 // if (!process.env.PORT) {
 //   mongoose.connect('mongodb://localhost:27017/recipe-saver-personal',  { useNewUrlParser: true });
 // } else {
