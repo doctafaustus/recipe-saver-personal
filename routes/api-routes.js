@@ -29,9 +29,9 @@ module.exports = function(app) {
       Recipe.find({ user_id: req.body.user_id }, (err, recipes) => {
 
         // Check recipe limit
-        if (recipes.length >= recipeLimit && !hasPaidPlan(user)) {
-          return res.json({ message: 'Limit reached' });
-        }
+        // if (recipes.length >= recipeLimit && !hasPaidPlan(user)) {
+        //   return res.json({ message: 'Limit reached' });
+        // }
 
         const data = req.body;
         let ogImage;
@@ -281,13 +281,13 @@ module.exports = function(app) {
       User.findOne({ _id: req.session.passport.user._id }, (err, user) => {
         Recipe.find({ user_id: req.session.passport.user._id }, (err, recipes) => {
           // Check for recipe limit
-          if (recipes.length >= recipeLimit && !hasPaidPlan(user)) {
-            return res.json({ message: 'Limit reached' });
-          } else {
+          // if (recipes.length >= recipeLimit && !hasPaidPlan(user)) {
+          //   return res.json({ message: 'Limit reached' });
+          // } else {
             const newRecipe = new Recipe();
             newRecipe.user_id = req.session.passport.user._id;
             addRecipe(newRecipe);
-          }
+          // }
         });
       });
 
