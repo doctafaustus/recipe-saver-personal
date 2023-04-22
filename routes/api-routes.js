@@ -17,6 +17,7 @@ cloudinary.config({
 const cloudinaryOptionsRecipe = { quality: 60, gravity: 'center', height: 570, width: 570, crop: 'fill', tags: ['recipe_saver'] };
 const cloudinaryOptionsProfile = Object.assign(cloudinaryOptionsRecipe, { tags: 'rs_profile_img', folder: 'recipe-saver-personal' });
 const recipeLimit = 5;
+console.log('test');
 
 
 module.exports = function(app) {
