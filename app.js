@@ -19,7 +19,7 @@ const User = require('./models/user');
 // DB / Mongoose modules
 const mongoose = require('mongoose');
 const uriUtil = require('mongodb-uri');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 
 // Stripe
 // const stripeSK = process.env.PORT ? process.env.STRIPE_LIVE_SK : fs.readFileSync(`${__dirname}/private/stripe_test_secret_key.txt`).toString();
@@ -33,37 +33,55 @@ const profileImageDefault = 'https://res.cloudinary.com/dzynqn10l/image/upload/v
 
 
 // DB setup
-mongoose.set('useUnifiedTopology', true);
+// mongoose.set('useUnifiedTopology', true);
 const mongodbUri = (process.env.PORT) ? process.env.DB_URI : fs.readFileSync(`${__dirname}/private/mongo_connection_uri.txt`).toString();
 
 
 // if (!process.env.PORT) {
 //   mongoose.connect('mongodb://localhost:27017/recipe-saver-personal',  { useNewUrlParser: true });
 // } else {
-  mongoose.connect(mongodbUri, {
-    useNewUrlParser: true, 
-    server: { 
-      socketOptions: { 
-        keepAlive: 1, 
-        connectTimeoutMS: 30000 
-      }
-    }
-  });
+  // mongoose.connect(mongodbUri, {
+  //   useNewUrlParser: true, 
+  //   server: { 
+  //     socketOptions: { 
+  //       keepAlive: 1, 
+  //       connectTimeoutMS: 30000 
+  //     }
+  //   }
+  // });
 //}
-let mongoStoreOptions;
-if (!process.env.PORT) {
-  mongoStoreOptions = {
-    url: 'mongodb://localhost/recipe-saver-personal',
-  };
-} else {
-	mongoStoreOptions = {
-		url: process.env.DB_URI,
-		ttl: 365 * 24 * 60 * 60,
-	};
+
+async function connectDB() {
+  try {
+    mongoose.set('strictQuery', false);
+    await mongoose.connect(mongodbUri, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
+
+    console.log('Connected to DB');
+  } catch (err) {
+    console.error('[DB Connection Error]', err);
+  }
 }
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', () => console.log('Mongo connection succeeded'));
+
+connectDB();
+
+
+
+let mongoStoreOptions;
+// if (!process.env.PORT) {
+//   mongoStoreOptions = {
+//     url: 'mongodb://localhost/recipe-saver-personal',
+//   };
+// } else {
+	mongoStoreOptions = {
+		mongoUrl: mongodbUri,
+	};
+// }
+// const db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error'));
+// db.once('open', () => console.log('Mongo connection succeeded'));
 
 
 // Express app / Middleware
@@ -76,7 +94,7 @@ app.use(session({
   cookie: { maxAge: 31556952000, secure: false },
   resave: false,
   saveUninitialized: true,
-  store: new MongoStore(mongoStoreOptions)
+  store: MongoStore.create(mongoStoreOptions)
 }));
 app.use(favicon(`${__dirname}/client/dist/favicon.ico`));
 app.use(passport.initialize());
